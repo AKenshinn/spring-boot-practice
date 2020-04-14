@@ -11,7 +11,7 @@
 	<groupId>com.anat.</groupId>
 	<artifactId>spring-boot-practice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>spring-boot-practice</name>
 	<description>Spring Boot Practice</description>
 
