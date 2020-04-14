@@ -1,5 +1,8 @@
 package com.anat.practice.util.csv;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,14 +16,20 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class CsvReaderUtils {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(CsvReaderUtils.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CsvReaderUtils.class);
   private static final String EXTENSION_CSV = "csv";
+
+  public List<List<String>> read(File file) throws Exception {
+    InputStream stream =  new FileInputStream(file);
+    return this.read(new MockMultipartFile("file", file.getName(), null, stream));
+  }
 
 	public List<List<String>> read(MultipartFile file) throws Exception {
     try {
