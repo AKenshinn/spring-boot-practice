@@ -39,7 +39,7 @@ public class AnimalDataSynchronizer {
   
   @Transactional
   private void initialAnimals(String animalDataPath, AnimalType animalType) throws Exception {
-    LOGGER.info("Initial animal data. : " +  animalType);
+    LOGGER.info("Initial animal data: " +  animalType);
     try {
       File animalDataFile = ResourceUtils.getFile("classpath:" + animalDataPath);
       List<List<String>> animalData= csvReaderUtils.read(animalDataFile);
@@ -49,9 +49,9 @@ public class AnimalDataSynchronizer {
 
       animalRepository.saveAll(animals);
 
-      LOGGER.info("Initial animal data success. :" + animalType);
+      LOGGER.info("Initial animal data success: " + animalType);
     } catch (Exception e) {
-      LOGGER.error("Initial animal data failure. :" + animalType, e);
+      LOGGER.error("Initial animal data failure: " + animalType, e);
     }
   }
   
