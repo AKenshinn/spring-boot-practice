@@ -1,21 +1,23 @@
 package com.anat.practice.util.csv;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.InputMismatchException;
 import java.util.List;
 
-import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class CsvReaderUtilsTest {
 
   private MockMultipartFile csvFile;
@@ -24,7 +26,7 @@ public class CsvReaderUtilsTest {
   @Autowired
   private CsvReaderUtils csvReaderUtils;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     csvFile = new MockMultipartFile("bug", "bug.csv", null
         , "Common Butterfly,Flying,160".getBytes());
@@ -36,17 +38,19 @@ public class CsvReaderUtilsTest {
   @Test
   public void testReadCsvFileShouldCorrectly() throws Exception {
     List<List<String>> data = csvReaderUtils.read(csvFile);
-    assertThat(data.size(), Matchers.equalTo(1));
+    assertThat(data.size(), is(equalTo(1)));
 
     List<String> firstLine = data.get(0);
-    assertThat(firstLine.contains("Common Butterfly"), Matchers.equalTo(true));
-    assertThat(firstLine.contains("Flying"), Matchers.equalTo(true));
-    assertThat(firstLine.contains("160"), Matchers.equalTo(true));
+    assertThat(firstLine.contains("Common Butterfly"), is(true));
+    assertThat(firstLine.contains("Flying"), is(true));
+    assertThat(firstLine.contains("160"), is(true));
   }
 
-  @Test(expected = InputMismatchException.class)
+  @Test
   public void testReadNotCsvShouldThrowInputMismatchException() throws Exception {
-    csvReaderUtils.read(notCsvFile);
+    Assertions.assertThrows(InputMismatchException.class, () -> {
+      csvReaderUtils.read(notCsvFile);
+    });
   }
 
 }
