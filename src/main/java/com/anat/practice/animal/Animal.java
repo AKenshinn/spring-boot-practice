@@ -4,8 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Table(name="animals")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Builder
 public class Animal {
 
   @Id
@@ -26,8 +36,6 @@ public class Animal {
 
   private String month;
 
-  protected Animal() { }
-
   public Animal(String name, AnimalType type, String location, String shadowSize, int value, String time, String month) {
     this.name = name;
     this.type = type;
@@ -37,65 +45,5 @@ public class Animal {
     this.time = time;
     this.month = month;
   }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public AnimalType getType() {
-    return type;
-  }
-
-  public void setType(AnimalType type) {
-    this.type = type;
-  }
-
-  public String getLocation() {
-    return location;
-  }
-
-  public String getShadowSize() {
-    return shadowSize;
-  }
-
-  public void setShadowSize(String shadowSize) {
-    this.shadowSize = shadowSize;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
-  public int getValue() {
-    return value;
-  }
-
-  public void setValue(int value) {
-    this.value = value;
-  }
-
-  public String getTime() {
-    return time;
-  }
-
-  public void setTime(String time) {
-    this.time = time;
-  }
-
-  public String getMonth() {
-    return month;
-  }
-
-  public void setMonth(String month) {
-    this.month = month;
-  }
-
+  
 }

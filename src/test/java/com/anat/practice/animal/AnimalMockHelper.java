@@ -29,21 +29,25 @@ public class AnimalMockHelper {
       return;
     }
 
-    Animal bug1 = new Animal();
-    bug1.setName("Bug1");
-    bug1.setType(AnimalType.BUG);
+    Animal bug1 = Animal.builder()
+        .name("Bug1")
+        .type(AnimalType.BUG)
+        .build();
 
-    Animal bug2 = new Animal();
-    bug2.setName("Bug2");
-    bug2.setType(AnimalType.BUG);
+    Animal bug2 = Animal.builder()
+        .name("Bug2")
+        .type(AnimalType.BUG)
+        .build();
 
-    Animal fish1 = new Animal();
-    fish1.setName("Fish1");
-    fish1.setType(AnimalType.FISH);
+    Animal fish1 = Animal.builder()
+        .name("Fish1")
+        .type(AnimalType.FISH)
+        .build();
 
-    Animal fish2 = new Animal();
-    fish2.setName("Fish2");
-    fish2.setType(AnimalType.FISH);
+    Animal fish2 = Animal.builder()
+        .name("Fish2")
+        .type(AnimalType.FISH)
+        .build();
 
     animals.add(bug1);
     animals.add(bug2);
