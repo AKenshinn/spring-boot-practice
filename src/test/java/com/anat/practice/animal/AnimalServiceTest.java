@@ -3,51 +3,62 @@ package com.anat.practice.animal;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class AnimalServiceTest {
 
-  @Mock
-  private AnimalRepository animalRepository;
-
-  @InjectMocks
+  @Autowired
   private AnimalService animalService;
-
-  @BeforeAll
-  public static void setUpClass() {
-    AnimalMockHelper.initial();
-  }
 
   @Test
   public void testFindAllShouldCorrectly() {
-    when(animalRepository.findAll()).thenReturn(AnimalMockHelper.findAll());
+    AnimalSearchCriteria criteria = AnimalSearchCriteria.builder()
+      .page(1)
+      .size(200)
+      .direction(Sort.Direction.ASC)
+      .sort("id")
+      .build();
 
-    List<Animal> animals = animalService.findAll();
-    assertThat(animals.size(), is(equalTo(4)));
+    List<Animal> animals = animalService.findAll(criteria);
+    assertThat(animals.size(), is(equalTo(160)));
+  }
+
+  @Test
+  public void testFindByNameContainsShouldCorrectly() {
+    AnimalSearchCriteria criteria = AnimalSearchCriteria.builder()
+      .page(1)
+      .size(200)
+      .direction(Sort.Direction.ASC)
+      .sort("id")
+      .name("common")
+      .build();
+
+    List<Animal> bugs = animalService.findAll(criteria);
+    assertThat(bugs.size(), is(equalTo(2)));
   }
 
   @Test
   public void testFindByTypeShouldCorrectly() {
-    when(animalRepository.findByType(any(AnimalType.class))).then(i -> AnimalMockHelper.findByType(i.getArgument(0)));
+    AnimalSearchCriteria criteria = AnimalSearchCriteria.builder()
+      .page(1)
+      .size(200)
+      .direction(Sort.Direction.ASC)
+      .sort("id")
+      .type(AnimalType.BUG)
+      .build();
 
-    List<Animal> bugs = animalService.findByType(AnimalType.BUG);
-    assertThat(bugs.size(), is(equalTo(2)));
-
-    List<Animal> fishes = animalService.findByType(AnimalType.FISH);
-    assertThat(fishes.size(), is(equalTo(2)));
+    List<Animal> bugs = animalService.findAll(criteria);
+    assertThat(bugs.size(), is(equalTo(80)));
   }
-  
+
 }

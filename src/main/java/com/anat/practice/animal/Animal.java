@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @Table(name="animals")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class Animal {
+public class Animal extends RepresentationModel<Animal> {
 
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
