@@ -16,7 +16,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,19 +26,24 @@ public class CsvReaderUtils {
   private static final String EXTENSION_CSV = "csv";
 
   public List<List<String>> read(File file) throws Exception {
-    InputStream stream =  new FileInputStream(file);
-    return this.read(new MockMultipartFile("file", file.getName(), null, stream));
+    InputStream inputStream =  new FileInputStream(file);
+    return this.read(inputStream, file.getName());
   }
 
-	public List<List<String>> read(MultipartFile file) throws Exception {
+  public List<List<String>> read(MultipartFile file) throws Exception {
+    InputStream inputStream = file.getInputStream();
+    return this.read(inputStream, file.getOriginalFilename());
+  }
+
+	private List<List<String>> read(InputStream inputStream, String filename) throws Exception {
     try {
-      String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+      String extension = FilenameUtils.getExtension(filename);
       if (!EXTENSION_CSV.equals(extension.toLowerCase())) {
         throw new InputMismatchException("Input file is not csv file.");
       }
 
       /* Skip BOM character in CSV file */
-      BOMInputStream bomIn = new BOMInputStream(file.getInputStream()
+      BOMInputStream bomIn = new BOMInputStream(inputStream
         , ByteOrderMark.UTF_8
         , ByteOrderMark.UTF_16BE
         , ByteOrderMark.UTF_16LE
@@ -59,10 +63,10 @@ public class CsvReaderUtils {
 
       return csvData;
     } catch (InputMismatchException e) {
-      LOGGER.error("Input file is not csv file: " + file.getName());
+      LOGGER.error("Input file is not csv file: " + filename);
       throw e;
     } catch (Exception e) {
-      LOGGER.error("Can't read input file: " + file.getName());
+      LOGGER.error("Can't read input file: " + filename);
       throw e;
     }
   }
