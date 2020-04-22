@@ -4,7 +4,7 @@ Learning for create REST API using Spring Boot with Animal Crossing data.
 
 ## Requirement
 
-1. Java 8
+1. Java 11
 2. Docker (for using PostgresSQL)
 
 ## How to run on localhost
